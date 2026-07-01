@@ -100,6 +100,26 @@ nav a[aria-current="page"] {
   color: var(--blue);
 }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  color: var(--navy);
+  background: var(--gold-soft);
+  border: 1px solid rgba(185, 138, 58, 0.42);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.lang-switch:hover {
+  color: var(--navy);
+  background: #fff4de;
+}
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -1369,6 +1389,11 @@ footer p {
     width: 100%;
     overflow-x: auto;
     padding-bottom: 4px;
+  }
+
+  .lang-switch {
+    min-height: 32px;
+    padding: 0 11px;
   }
 
   .hero-inner,
