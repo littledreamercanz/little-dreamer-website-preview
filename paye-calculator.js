@@ -20,7 +20,15 @@ const PAYE_CONFIG = {
     accCap: 152790,
     studentLoanRate: 0.12,
     studentLoanThreshold: 24128,
-    kiwiSaverRates: [0, 0.03, 0.04, 0.06, 0.08, 0.10]
+    kiwiSaverRates: [0, 0.03, 0.04, 0.06, 0.08, 0.10],
+    employerKiwiSaverRates: [0, 0.03, 0.04, 0.06, 0.08, 0.10],
+    esctRates: [
+      { upTo: 16800, rate: 0.105 },
+      { upTo: 57600, rate: 0.175 },
+      { upTo: 84000, rate: 0.30 },
+      { upTo: 216000, rate: 0.33 },
+      { upTo: Infinity, rate: 0.39 }
+    ]
   },
   "2026-27": {
     label: "2026-27 draft",
@@ -43,7 +51,15 @@ const PAYE_CONFIG = {
     accCap: 152790,
     studentLoanRate: 0.12,
     studentLoanThreshold: 24128,
-    kiwiSaverRates: [0, 0.035, 0.04, 0.06, 0.08, 0.10]
+    kiwiSaverRates: [0, 0.035, 0.04, 0.06, 0.08, 0.10],
+    employerKiwiSaverRates: [0, 0.035, 0.04, 0.06, 0.08, 0.10],
+    esctRates: [
+      { upTo: 16800, rate: 0.105 },
+      { upTo: 57600, rate: 0.175 },
+      { upTo: 84000, rate: 0.30 },
+      { upTo: 216000, rate: 0.33 },
+      { upTo: Infinity, rate: 0.39 }
+    ]
   }
 };
 
@@ -96,6 +112,12 @@ function studentLoanDeduction(annualGross, config) {
   return Math.max(0, annualGross - config.studentLoanThreshold) * config.studentLoanRate;
 }
 
+function esctRateForAnnualPay(annualGross, annualEmployerContribution, config) {
+  const esctIncome = annualGross + annualEmployerContribution;
+  const bracket = config.esctRates.find((rate) => esctIncome <= rate.upTo);
+  return bracket ? bracket.rate : 0.39;
+}
+
 function calculateFromGross(grossPerPeriod, options) {
   const periods = options.periods;
   const annualGross = grossPerPeriod * periods;
@@ -108,8 +130,15 @@ function calculateFromGross(grossPerPeriod, options) {
   const acc = accLevy(annualGross, config);
   const studentLoan = options.studentLoan ? studentLoanDeduction(annualGross, config) : 0;
   const kiwiSaver = grossPerPeriod * options.kiwiSaverRate;
+  const employerKiwiSaverGross = grossPerPeriod * options.employerKiwiSaverRate;
+  const annualEmployerKiwiSaverGross = employerKiwiSaverGross * periods;
+  const esctRate = esctRateForAnnualPay(annualGross, annualEmployerKiwiSaverGross, config);
+  const esct = employerKiwiSaverGross * esctRate;
+  const employerKiwiSaverNet = employerKiwiSaverGross - esct;
   const payePerPeriod = (tax + acc + studentLoan) / periods;
   const net = grossPerPeriod - payePerPeriod - kiwiSaver;
+  const irdPayable = payePerPeriod + kiwiSaver + employerKiwiSaverGross;
+  const employerCashCost = grossPerPeriod + employerKiwiSaverGross;
   return {
     gross: grossPerPeriod,
     tax: tax / periods,
@@ -117,7 +146,13 @@ function calculateFromGross(grossPerPeriod, options) {
     studentLoan: studentLoan / periods,
     paye: payePerPeriod,
     kiwiSaver,
-    net
+    employerKiwiSaverGross,
+    esctRate,
+    esct,
+    employerKiwiSaverNet,
+    net,
+    irdPayable,
+    employerCashCost
   };
 }
 
@@ -150,6 +185,15 @@ function buildKiwiSaverOptions(selected = "0.03") {
   }).join("");
 }
 
+function buildEmployerKiwiSaverOptions(selected = "0.03") {
+  const config = PAYE_CONFIG[taxYearEl?.value || "2025-26"];
+  return config.employerKiwiSaverRates.map((rate) => {
+    const value = String(rate);
+    const label = rate === 0 ? "0%" : `${(rate * 100).toFixed(rate === 0.035 ? 1 : 0)}%`;
+    return `<option value="${value}" ${value === selected ? "selected" : ""}>${label}</option>`;
+  }).join("");
+}
+
 function createRow(name = "") {
   const row = document.createElement("tr");
   row.className = "employee-row";
@@ -157,12 +201,17 @@ function createRow(name = "") {
     <td><input class="employee-name" type="text" value="${name}" aria-label="Employee name"></td>
     <td><input class="pay-amount" type="number" min="0" step="0.01" value="1200" aria-label="Pay amount"></td>
     <td><select class="tax-code" aria-label="Tax code">${buildTaxCodeOptions()}</select></td>
-    <td><select class="kiwisaver-rate" aria-label="KiwiSaver rate">${buildKiwiSaverOptions()}</select></td>
+    <td><select class="kiwisaver-rate" aria-label="Employee KiwiSaver rate">${buildKiwiSaverOptions()}</select></td>
+    <td><select class="employer-kiwisaver-rate" aria-label="Employer KiwiSaver rate">${buildEmployerKiwiSaverOptions()}</select></td>
     <td><input class="student-loan" type="checkbox" aria-label="Student loan"></td>
     <td class="result-gross">$0.00</td>
     <td class="result-paye">$0.00</td>
     <td class="result-kiwisaver">$0.00</td>
+    <td class="result-employer-kiwisaver">$0.00</td>
+    <td class="result-esct">$0.00</td>
+    <td class="result-employer-kiwisaver-net">$0.00</td>
     <td class="result-net">$0.00</td>
+    <td class="result-ird">$0.00</td>
     <td><button class="remove-row" type="button" aria-label="Remove employee">Remove</button></td>
   `;
   rowsEl.appendChild(row);
@@ -199,13 +248,26 @@ function refreshKiwiSaverOptions() {
     const current = select.value;
     select.innerHTML = buildKiwiSaverOptions(current);
   });
+  document.querySelectorAll(".employer-kiwisaver-rate").forEach((select) => {
+    const current = select.value;
+    select.innerHTML = buildEmployerKiwiSaverOptions(current);
+  });
 }
 
 function recalculate() {
   const config = PAYE_CONFIG[taxYearEl.value];
   const periods = Number(payPeriodEl.value);
   const mode = calcModeEl.value;
-  const totals = { gross: 0, paye: 0, kiwiSaver: 0, net: 0 };
+  const totals = {
+    gross: 0,
+    paye: 0,
+    employeeKiwiSaver: 0,
+    employerKiwiSaver: 0,
+    esct: 0,
+    net: 0,
+    irdPayable: 0,
+    employerCashCost: 0
+  };
   document.querySelectorAll(".employee-row").forEach((row) => {
     const amount = numberValue(row.querySelector(".pay-amount").value);
     const taxCode = row.querySelector(".tax-code").value;
@@ -215,7 +277,8 @@ function recalculate() {
       periods,
       taxCode,
       studentLoan,
-      kiwiSaverRate: Number(row.querySelector(".kiwisaver-rate").value)
+      kiwiSaverRate: Number(row.querySelector(".kiwisaver-rate").value),
+      employerKiwiSaverRate: Number(row.querySelector(".employer-kiwisaver-rate").value)
     };
     const result = mode === "grossToNet"
       ? calculateFromGross(amount, options)
@@ -223,16 +286,28 @@ function recalculate() {
     row.querySelector(".result-gross").textContent = money(result.gross);
     row.querySelector(".result-paye").textContent = money(result.paye);
     row.querySelector(".result-kiwisaver").textContent = money(result.kiwiSaver);
+    row.querySelector(".result-employer-kiwisaver").textContent = money(result.employerKiwiSaverGross);
+    row.querySelector(".result-esct").textContent = `${money(result.esct)} (${(result.esctRate * 100).toFixed(1)}%)`;
+    row.querySelector(".result-employer-kiwisaver-net").textContent = money(result.employerKiwiSaverNet);
     row.querySelector(".result-net").textContent = money(result.net);
+    row.querySelector(".result-ird").textContent = money(result.irdPayable);
     totals.gross += result.gross;
     totals.paye += result.paye;
-    totals.kiwiSaver += result.kiwiSaver;
+    totals.employeeKiwiSaver += result.kiwiSaver;
+    totals.employerKiwiSaver += result.employerKiwiSaverGross;
+    totals.esct += result.esct;
     totals.net += result.net;
+    totals.irdPayable += result.irdPayable;
+    totals.employerCashCost += result.employerCashCost;
   });
   document.querySelector("#totalGross").textContent = money(totals.gross);
   document.querySelector("#totalPaye").textContent = money(totals.paye);
-  document.querySelector("#totalKiwiSaver").textContent = money(totals.kiwiSaver);
+  document.querySelector("#totalEmployeeKiwiSaver").textContent = money(totals.employeeKiwiSaver);
   document.querySelector("#totalNet").textContent = money(totals.net);
+  document.querySelector("#totalEmployerKiwiSaver").textContent = money(totals.employerKiwiSaver);
+  document.querySelector("#totalEsct").textContent = money(totals.esct);
+  document.querySelector("#totalIrd").textContent = money(totals.irdPayable);
+  document.querySelector("#totalEmployerCost").textContent = money(totals.employerCashCost);
 }
 
 if (typeof window !== "undefined") {
@@ -243,6 +318,7 @@ if (typeof window !== "undefined") {
     annualIncomeTax,
     accLevy,
     studentLoanDeduction
+    , esctRateForAnnualPay
   };
 }
 

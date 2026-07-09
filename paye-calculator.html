@@ -64,8 +64,9 @@
 
         <div class="paye-note">
           <strong>Important:</strong>
-          This calculator is an estimate for planning only. PAYE, ACC earners' levy, student loan and KiwiSaver settings can change.
+          This calculator is an estimate for planning only. PAYE, ACC earners' levy, student loan, KiwiSaver and ESCT settings can change.
           For filing, use IRD payroll guidance, payday filing software or the official IRD calculator.
+          "To IRD" below includes PAYE/ACC/student loan deductions, employee KiwiSaver and gross employer KiwiSaver contribution.
         </div>
 
         <div class="paye-table-wrap">
@@ -75,12 +76,17 @@
                 <th>Employee</th>
                 <th>Amount</th>
                 <th>Tax code</th>
-                <th>KiwiSaver</th>
+                <th>Employee KS</th>
+                <th>Employer KS</th>
                 <th>Student loan</th>
                 <th>Gross</th>
-                <th>PAYE + ACC</th>
-                <th>KiwiSaver</th>
+                <th>PAYE/ACC/SL</th>
+                <th>Employee KS</th>
+                <th>Employer KS gross</th>
+                <th>ESCT</th>
+                <th>Employer KS net</th>
                 <th>Net pay</th>
+                <th>To IRD</th>
                 <th></th>
               </tr>
             </thead>
@@ -94,16 +100,32 @@
             <strong id="totalGross">$0.00</strong>
           </article>
           <article>
-            <span>Total PAYE + ACC</span>
+            <span>Total PAYE/ACC/SL</span>
             <strong id="totalPaye">$0.00</strong>
           </article>
           <article>
-            <span>Total KiwiSaver</span>
-            <strong id="totalKiwiSaver">$0.00</strong>
+            <span>Total employee KiwiSaver</span>
+            <strong id="totalEmployeeKiwiSaver">$0.00</strong>
           </article>
           <article>
             <span>Total net pay</span>
             <strong id="totalNet">$0.00</strong>
+          </article>
+          <article>
+            <span>Total employer KiwiSaver</span>
+            <strong id="totalEmployerKiwiSaver">$0.00</strong>
+          </article>
+          <article>
+            <span>Total ESCT</span>
+            <strong id="totalEsct">$0.00</strong>
+          </article>
+          <article>
+            <span>Total to IRD</span>
+            <strong id="totalIrd">$0.00</strong>
+          </article>
+          <article>
+            <span>Total employer cash cost</span>
+            <strong id="totalEmployerCost">$0.00</strong>
           </article>
         </div>
 
@@ -113,13 +135,14 @@
             <h2>第一版范围</h2>
             <p>
               支持 primary tax code M、M SL，secondary tax codes SB/S/SH/ST/SA，no-notification code ND，
-              常见 pay periods、gross-to-net、net-to-gross、KiwiSaver employee deduction 和 student loan estimate。
+              常见 pay periods、gross-to-net、net-to-gross、employee KiwiSaver、employer KiwiSaver、ESCT 和 student loan estimate。
             </p>
           </div>
           <div class="paye-rules">
             <span>2025-26 income tax brackets loaded</span>
             <span>ACC earners' levy estimate included</span>
-            <span>KiwiSaver employee deduction by gross pay</span>
+            <span>Employee and employer KiwiSaver included</span>
+            <span>ESCT rate auto-estimated from annualised pay</span>
             <span>Student loan threshold estimate included</span>
           </div>
         </div>
