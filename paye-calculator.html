@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PAYE Net Pay Calculator | Little Dreamer Ltd</title>
+    <meta name="description" content="New Zealand PAYE, net pay, gross pay, KiwiSaver and student loan estimate tool by Little Dreamer Ltd.">
+    <link rel="stylesheet" href="styles.css?v=9">
+    <script defer src="paye-calculator.js?v=1"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Little Dreamer Ltd home">
+        <span class="brand-mark">LD</span>
+        <span><strong>Little Dreamer Ltd</strong><small>Chartered Accountant · CPA · Tax Agent</small></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="index.html">首页</a>
+        <a href="services.html">服务</a>
+        <a href="pricing.html">报价</a>
+        <a href="about.html">资质</a>
+        <a href="contact.html">联系</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero paye-hero">
+        <p class="eyebrow">Payroll tool draft</p>
+        <h1>NZ PAYE / Net Pay Calculator</h1>
+        <p>
+          输入员工工资、支付周期、tax code、KiwiSaver 和 student loan，快速估算 gross pay、PAYE deductions 和 net pay。
+          这是 Little Dreamer Ltd 内部工具第一版，正式 payroll filing 仍需按 IRD 最新规则确认。
+        </p>
+      </section>
+
+      <section class="section paye-tool-section">
+        <div class="paye-toolbar">
+          <label>
+            Tax year
+            <select id="taxYear">
+              <option value="2025-26">2025-26</option>
+              <option value="2026-27">2026-27 draft</option>
+            </select>
+          </label>
+          <label>
+            Calculation mode
+            <select id="calcMode">
+              <option value="grossToNet">Gross to net</option>
+              <option value="netToGross">Net to gross</option>
+            </select>
+          </label>
+          <label>
+            Pay period
+            <select id="payPeriod">
+              <option value="52">Weekly</option>
+              <option value="26">Fortnightly</option>
+              <option value="13">Four-weekly</option>
+              <option value="12">Monthly</option>
+              <option value="1">Annual</option>
+            </select>
+          </label>
+          <button class="button primary dark-button" id="addEmployee" type="button">Add employee</button>
+        </div>
+
+        <div class="paye-note">
+          <strong>Important:</strong>
+          This calculator is an estimate for planning only. PAYE, ACC earners' levy, student loan and KiwiSaver settings can change.
+          For filing, use IRD payroll guidance, payday filing software or the official IRD calculator.
+        </div>
+
+        <div class="paye-table-wrap">
+          <table class="paye-table" aria-label="PAYE employee calculator">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Amount</th>
+                <th>Tax code</th>
+                <th>KiwiSaver</th>
+                <th>Student loan</th>
+                <th>Gross</th>
+                <th>PAYE + ACC</th>
+                <th>KiwiSaver</th>
+                <th>Net pay</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="employeeRows"></tbody>
+          </table>
+        </div>
+
+        <div class="paye-summary-grid">
+          <article>
+            <span>Total gross</span>
+            <strong id="totalGross">$0.00</strong>
+          </article>
+          <article>
+            <span>Total PAYE + ACC</span>
+            <strong id="totalPaye">$0.00</strong>
+          </article>
+          <article>
+            <span>Total KiwiSaver</span>
+            <strong id="totalKiwiSaver">$0.00</strong>
+          </article>
+          <article>
+            <span>Total net pay</span>
+            <strong id="totalNet">$0.00</strong>
+          </article>
+        </div>
+
+        <div class="paye-detail-panel">
+          <div>
+            <p class="section-label">Supported in this draft</p>
+            <h2>第一版范围</h2>
+            <p>
+              支持 primary tax code M、M SL，secondary tax codes SB/S/SH/ST/SA，no-notification code ND，
+              常见 pay periods、gross-to-net、net-to-gross、KiwiSaver employee deduction 和 student loan estimate。
+            </p>
+          </div>
+          <div class="paye-rules">
+            <span>2025-26 income tax brackets loaded</span>
+            <span>ACC earners' levy estimate included</span>
+            <span>KiwiSaver employee deduction by gross pay</span>
+            <span>Student loan threshold estimate included</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Little Dreamer Ltd.</p>
+      <p>PAYE calculator information is general only and should be checked against IRD rules for the relevant pay date.</p>
+    </footer>
+  </body>
+</html>
