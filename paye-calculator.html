@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PAYE Net Pay Calculator | Little Dreamer Ltd</title>
     <meta name="description" content="New Zealand PAYE, net pay, gross pay, KiwiSaver and student loan estimate tool by Little Dreamer Ltd.">
-    <link rel="stylesheet" href="styles.css?v=9">
-    <script defer src="paye-calculator.js?v=1"></script>
+    <link rel="stylesheet" href="styles.css?v=10">
+    <script defer src="paye-calculator.js?v=2"></script>
   </head>
   <body>
     <header class="site-header">
@@ -59,7 +59,12 @@
               <option value="1">Annual</option>
             </select>
           </label>
+          <label>
+            Pay date
+            <input id="payDate" type="date">
+          </label>
           <button class="button primary dark-button" id="addEmployee" type="button">Add employee</button>
+          <button class="button secondary export-button" id="downloadCsv" type="button">Download CSV</button>
         </div>
 
         <div class="paye-note">
@@ -67,6 +72,7 @@
           This calculator is an estimate for planning only. PAYE, ACC earners' levy, student loan, KiwiSaver and ESCT settings can change.
           For filing, use IRD payroll guidance, payday filing software or the official IRD calculator.
           "To IRD" below includes PAYE/ACC/student loan deductions, employee KiwiSaver and gross employer KiwiSaver contribution.
+          Use Download CSV to export the current calculation into a spreadsheet format for checking or client working papers.
         </div>
 
         <div class="paye-table-wrap">

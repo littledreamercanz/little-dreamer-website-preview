@@ -79,6 +79,9 @@ const rowsEl = hasDocument ? document.querySelector("#employeeRows") : null;
 const taxYearEl = hasDocument ? document.querySelector("#taxYear") : null;
 const calcModeEl = hasDocument ? document.querySelector("#calcMode") : null;
 const payPeriodEl = hasDocument ? document.querySelector("#payPeriod") : null;
+const payDateEl = hasDocument ? document.querySelector("#payDate") : null;
+let latestResults = [];
+let latestTotals = null;
 
 function money(value) {
   return new Intl.NumberFormat("en-NZ", {
@@ -86,6 +89,10 @@ function money(value) {
     currency: "NZD",
     minimumFractionDigits: 2
   }).format(Number.isFinite(value) ? value : 0);
+}
+
+function plainMoney(value) {
+  return (Number.isFinite(value) ? value : 0).toFixed(2);
 }
 
 function numberValue(input) {
@@ -258,6 +265,7 @@ function recalculate() {
   const config = PAYE_CONFIG[taxYearEl.value];
   const periods = Number(payPeriodEl.value);
   const mode = calcModeEl.value;
+  latestResults = [];
   const totals = {
     gross: 0,
     paye: 0,
@@ -269,6 +277,7 @@ function recalculate() {
     employerCashCost: 0
   };
   document.querySelectorAll(".employee-row").forEach((row) => {
+    const employeeName = row.querySelector(".employee-name").value || "Employee";
     const amount = numberValue(row.querySelector(".pay-amount").value);
     const taxCode = row.querySelector(".tax-code").value;
     const studentLoan = row.querySelector(".student-loan").checked || taxCode.includes("SL");
@@ -299,6 +308,15 @@ function recalculate() {
     totals.net += result.net;
     totals.irdPayable += result.irdPayable;
     totals.employerCashCost += result.employerCashCost;
+    latestResults.push({
+      employeeName,
+      inputAmount: amount,
+      taxCode,
+      studentLoan,
+      employeeKiwiSaverRate: options.kiwiSaverRate,
+      employerKiwiSaverRate: options.employerKiwiSaverRate,
+      ...result
+    });
   });
   document.querySelector("#totalGross").textContent = money(totals.gross);
   document.querySelector("#totalPaye").textContent = money(totals.paye);
@@ -308,6 +326,87 @@ function recalculate() {
   document.querySelector("#totalEsct").textContent = money(totals.esct);
   document.querySelector("#totalIrd").textContent = money(totals.irdPayable);
   document.querySelector("#totalEmployerCost").textContent = money(totals.employerCashCost);
+  latestTotals = totals;
+}
+
+function csvEscape(value) {
+  const text = String(value ?? "");
+  return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function downloadCsv() {
+  recalculate();
+  const taxYear = taxYearEl.value;
+  const mode = calcModeEl.options[calcModeEl.selectedIndex].textContent;
+  const payPeriod = payPeriodEl.options[payPeriodEl.selectedIndex].textContent;
+  const payDate = payDateEl.value || "";
+  const rows = [
+    ["Little Dreamer Ltd PAYE calculator export"],
+    ["Tax year", taxYear],
+    ["Calculation mode", mode],
+    ["Pay period", payPeriod],
+    ["Pay date", payDate],
+    ["Exported", new Date().toLocaleString("en-NZ")],
+    [],
+    [
+      "Employee",
+      "Input amount",
+      "Tax code",
+      "Student loan",
+      "Employee KiwiSaver %",
+      "Employer KiwiSaver %",
+      "Gross",
+      "PAYE/ACC/SL",
+      "Employee KiwiSaver",
+      "Employer KiwiSaver gross",
+      "ESCT rate",
+      "ESCT",
+      "Employer KiwiSaver net",
+      "Net pay",
+      "To IRD",
+      "Employer cash cost"
+    ],
+    ...latestResults.map((result) => [
+      result.employeeName,
+      plainMoney(result.inputAmount),
+      result.taxCode,
+      result.studentLoan ? "Yes" : "No",
+      `${(result.employeeKiwiSaverRate * 100).toFixed(1)}%`,
+      `${(result.employerKiwiSaverRate * 100).toFixed(1)}%`,
+      plainMoney(result.gross),
+      plainMoney(result.paye),
+      plainMoney(result.kiwiSaver),
+      plainMoney(result.employerKiwiSaverGross),
+      `${(result.esctRate * 100).toFixed(1)}%`,
+      plainMoney(result.esct),
+      plainMoney(result.employerKiwiSaverNet),
+      plainMoney(result.net),
+      plainMoney(result.irdPayable),
+      plainMoney(result.employerCashCost)
+    ]),
+    [],
+    ["Totals"],
+    ["Total gross", plainMoney(latestTotals.gross)],
+    ["Total PAYE/ACC/SL", plainMoney(latestTotals.paye)],
+    ["Total employee KiwiSaver", plainMoney(latestTotals.employeeKiwiSaver)],
+    ["Total net pay", plainMoney(latestTotals.net)],
+    ["Total employer KiwiSaver", plainMoney(latestTotals.employerKiwiSaver)],
+    ["Total ESCT", plainMoney(latestTotals.esct)],
+    ["Total to IRD", plainMoney(latestTotals.irdPayable)],
+    ["Total employer cash cost", plainMoney(latestTotals.employerCashCost)],
+    [],
+    ["Note", "Estimate only. Check final payroll against IRD rules and payroll software before filing."]
+  ];
+  const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const link = document.createElement("a");
+  const datePart = payDate || new Date().toISOString().slice(0, 10);
+  link.href = URL.createObjectURL(blob);
+  link.download = `little-dreamer-paye-${datePart}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
 }
 
 if (typeof window !== "undefined") {
@@ -317,8 +416,8 @@ if (typeof window !== "undefined") {
     calculateFromNet,
     annualIncomeTax,
     accLevy,
-    studentLoanDeduction
-    , esctRateForAnnualPay
+    studentLoanDeduction,
+    esctRateForAnnualPay
   };
 }
 
@@ -326,8 +425,9 @@ if (hasDocument) {
   document.querySelector("#addEmployee").addEventListener("click", () => {
     createRow(`Employee ${document.querySelectorAll(".employee-row").length + 1}`);
   });
+  document.querySelector("#downloadCsv").addEventListener("click", downloadCsv);
 
-  [taxYearEl, calcModeEl, payPeriodEl].forEach((el) => {
+  [taxYearEl, calcModeEl, payPeriodEl, payDateEl].forEach((el) => {
     el.addEventListener("change", () => {
       if (el === taxYearEl) refreshKiwiSaverOptions();
       recalculate();
