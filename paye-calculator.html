@@ -6,7 +6,7 @@
     <title>PAYE Net Pay Calculator | Little Dreamer Ltd</title>
     <meta name="description" content="New Zealand PAYE, net pay, gross pay, KiwiSaver and student loan estimate tool by Little Dreamer Ltd.">
     <link rel="stylesheet" href="styles.css?v=10">
-    <script defer src="paye-calculator.js?v=2"></script>
+    <script defer src="paye-calculator.js?v=3"></script>
   </head>
   <body>
     <header class="site-header">
@@ -73,6 +73,7 @@
           For filing, use IRD payroll guidance, payday filing software or the official IRD calculator.
           "To IRD" below includes PAYE/ACC/student loan deductions, employee KiwiSaver and gross employer KiwiSaver contribution.
           Use Download CSV to export the current calculation into a spreadsheet format for checking or client working papers.
+          Student loan is handled separately, so the tax code list stays focused.
         </div>
 
         <div class="paye-table-wrap">
@@ -81,7 +82,7 @@
               <tr>
                 <th>Employee</th>
                 <th>Amount</th>
-                <th>Tax code</th>
+                <th>Income type</th>
                 <th>Employee KS</th>
                 <th>Employer KS</th>
                 <th>Student loan</th>
@@ -140,13 +141,14 @@
             <p class="section-label">Supported in this draft</p>
             <h2>第一版范围</h2>
             <p>
-              支持 primary tax code M、M SL，secondary tax codes SB/S/SH/ST/SA，no-notification code ND，
+              精选常用 income type：M、ME、secondary income 和 no declaration。学生贷款单独勾选，
               常见 pay periods、gross-to-net、net-to-gross、employee KiwiSaver、employer KiwiSaver、ESCT 和 student loan estimate。
             </p>
           </div>
           <div class="paye-rules">
             <span>2025-26 income tax brackets loaded</span>
             <span>ACC earners' levy estimate included</span>
+            <span>ME includes an independent earner tax credit estimate</span>
             <span>Employee and employer KiwiSaver included</span>
             <span>ESCT rate auto-estimated from annualised pay</span>
             <span>Student loan threshold estimate included</span>

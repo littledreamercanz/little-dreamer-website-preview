@@ -20,6 +20,13 @@ const PAYE_CONFIG = {
     accCap: 152790,
     studentLoanRate: 0.12,
     studentLoanThreshold: 24128,
+    independentEarnerTaxCredit: {
+      minimumIncome: 24000,
+      fullUntil: 66000,
+      maximumIncome: 70000,
+      annualCredit: 1040,
+      abatementRate: 0.13
+    },
     kiwiSaverRates: [0, 0.03, 0.04, 0.06, 0.08, 0.10],
     employerKiwiSaverRates: [0, 0.03, 0.04, 0.06, 0.08, 0.10],
     esctRates: [
@@ -51,6 +58,13 @@ const PAYE_CONFIG = {
     accCap: 152790,
     studentLoanRate: 0.12,
     studentLoanThreshold: 24128,
+    independentEarnerTaxCredit: {
+      minimumIncome: 24000,
+      fullUntil: 66000,
+      maximumIncome: 70000,
+      annualCredit: 1040,
+      abatementRate: 0.13
+    },
     kiwiSaverRates: [0, 0.035, 0.04, 0.06, 0.08, 0.10],
     employerKiwiSaverRates: [0, 0.035, 0.04, 0.06, 0.08, 0.10],
     esctRates: [
@@ -64,14 +78,10 @@ const PAYE_CONFIG = {
 };
 
 const TAX_CODES = [
-  { value: "M", label: "M - Primary income" },
-  { value: "M SL", label: "M SL - Primary + student loan" },
-  { value: "SB", label: "SB - Secondary 10.5%" },
-  { value: "S", label: "S - Secondary 17.5%" },
-  { value: "SH", label: "SH - Secondary 30%" },
-  { value: "ST", label: "ST - Secondary 33%" },
-  { value: "SA", label: "SA - Secondary 39%" },
-  { value: "ND", label: "ND - No declaration 45%" }
+  { value: "M", label: "M - Main income" },
+  { value: "ME", label: "ME - Main income + IETC" },
+  { value: "SEC", label: "Secondary income - auto estimate" },
+  { value: "ND", label: "No declaration - 45%" }
 ];
 
 const hasDocument = typeof document !== "undefined";
@@ -119,6 +129,21 @@ function studentLoanDeduction(annualGross, config) {
   return Math.max(0, annualGross - config.studentLoanThreshold) * config.studentLoanRate;
 }
 
+function independentEarnerTaxCredit(annualGross, config) {
+  const credit = config.independentEarnerTaxCredit;
+  if (!credit || annualGross < credit.minimumIncome || annualGross >= credit.maximumIncome) return 0;
+  if (annualGross <= credit.fullUntil) return credit.annualCredit;
+  return Math.max(0, credit.annualCredit - ((annualGross - credit.fullUntil) * credit.abatementRate));
+}
+
+function secondaryRateForAnnualPay(annualGross, config) {
+  if (annualGross <= 15600) return config.secondaryRates.SB;
+  if (annualGross <= 53500) return config.secondaryRates.S;
+  if (annualGross <= 78100) return config.secondaryRates.SH;
+  if (annualGross <= 180000) return config.secondaryRates.ST;
+  return config.secondaryRates.SA;
+}
+
 function esctRateForAnnualPay(annualGross, annualEmployerContribution, config) {
   const esctIncome = annualGross + annualEmployerContribution;
   const bracket = config.esctRates.find((rate) => esctIncome <= rate.upTo);
@@ -129,11 +154,14 @@ function calculateFromGross(grossPerPeriod, options) {
   const periods = options.periods;
   const annualGross = grossPerPeriod * periods;
   const config = options.config;
-  const baseCode = options.taxCode.replace(" SL", "");
-  const isPrimary = baseCode === "M";
-  const tax = isPrimary
-    ? annualIncomeTax(annualGross, config)
-    : annualGross * (config.secondaryRates[baseCode] ?? 0);
+  let tax = annualIncomeTax(annualGross, config);
+  if (options.taxCode === "ME") {
+    tax = Math.max(0, tax - independentEarnerTaxCredit(annualGross, config));
+  } else if (options.taxCode === "SEC") {
+    tax = annualGross * secondaryRateForAnnualPay(annualGross, config);
+  } else if (options.taxCode === "ND") {
+    tax = annualGross * config.secondaryRates.ND;
+  }
   const acc = accLevy(annualGross, config);
   const studentLoan = options.studentLoan ? studentLoanDeduction(annualGross, config) : 0;
   const kiwiSaver = grossPerPeriod * options.kiwiSaverRate;
@@ -207,7 +235,7 @@ function createRow(name = "") {
   row.innerHTML = `
     <td><input class="employee-name" type="text" value="${name}" aria-label="Employee name"></td>
     <td><input class="pay-amount" type="number" min="0" step="0.01" value="1200" aria-label="Pay amount"></td>
-    <td><select class="tax-code" aria-label="Tax code">${buildTaxCodeOptions()}</select></td>
+    <td><select class="tax-code" aria-label="Income type">${buildTaxCodeOptions()}</select></td>
     <td><select class="kiwisaver-rate" aria-label="Employee KiwiSaver rate">${buildKiwiSaverOptions()}</select></td>
     <td><select class="employer-kiwisaver-rate" aria-label="Employer KiwiSaver rate">${buildEmployerKiwiSaverOptions()}</select></td>
     <td><input class="student-loan" type="checkbox" aria-label="Student loan"></td>
@@ -223,24 +251,15 @@ function createRow(name = "") {
   `;
   rowsEl.appendChild(row);
   wireRow(row);
-  syncTaxCodeStudentLoan(row);
   recalculate();
-}
-
-function syncTaxCodeStudentLoan(row) {
-  const taxCode = row.querySelector(".tax-code").value;
-  const loan = row.querySelector(".student-loan");
-  if (taxCode.includes("SL")) loan.checked = true;
 }
 
 function wireRow(row) {
   row.querySelectorAll("input, select").forEach((input) => {
     input.addEventListener("input", () => {
-      if (input.classList.contains("tax-code")) syncTaxCodeStudentLoan(row);
       recalculate();
     });
     input.addEventListener("change", () => {
-      if (input.classList.contains("tax-code")) syncTaxCodeStudentLoan(row);
       recalculate();
     });
   });
@@ -280,7 +299,7 @@ function recalculate() {
     const employeeName = row.querySelector(".employee-name").value || "Employee";
     const amount = numberValue(row.querySelector(".pay-amount").value);
     const taxCode = row.querySelector(".tax-code").value;
-    const studentLoan = row.querySelector(".student-loan").checked || taxCode.includes("SL");
+    const studentLoan = row.querySelector(".student-loan").checked;
     const options = {
       config,
       periods,
@@ -351,7 +370,7 @@ function downloadCsv() {
     [
       "Employee",
       "Input amount",
-      "Tax code",
+      "Income type",
       "Student loan",
       "Employee KiwiSaver %",
       "Employer KiwiSaver %",
@@ -417,6 +436,8 @@ if (typeof window !== "undefined") {
     annualIncomeTax,
     accLevy,
     studentLoanDeduction,
+    independentEarnerTaxCredit,
+    secondaryRateForAnnualPay,
     esctRateForAnnualPay
   };
 }
