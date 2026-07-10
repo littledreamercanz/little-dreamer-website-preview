@@ -79,7 +79,9 @@ const PAYE_CONFIG = {
 
 const TAX_CODES = [
   { value: "M", label: "M - Main income" },
+  { value: "M SL", label: "M SL - Main income + student loan" },
   { value: "ME", label: "ME - Main income + IETC" },
+  { value: "ME SL", label: "ME SL - Main income + IETC + student loan" },
   { value: "SEC", label: "Secondary income - auto estimate" },
   { value: "ND", label: "No declaration - 45%" }
 ];
@@ -154,12 +156,13 @@ function calculateFromGross(grossPerPeriod, options) {
   const periods = options.periods;
   const annualGross = grossPerPeriod * periods;
   const config = options.config;
+  const baseCode = options.taxCode.replace(" SL", "");
   let tax = annualIncomeTax(annualGross, config);
-  if (options.taxCode === "ME") {
+  if (baseCode === "ME") {
     tax = Math.max(0, tax - independentEarnerTaxCredit(annualGross, config));
-  } else if (options.taxCode === "SEC") {
+  } else if (baseCode === "SEC") {
     tax = annualGross * secondaryRateForAnnualPay(annualGross, config);
-  } else if (options.taxCode === "ND") {
+  } else if (baseCode === "ND") {
     tax = annualGross * config.secondaryRates.ND;
   }
   const acc = accLevy(annualGross, config);
@@ -251,15 +254,24 @@ function createRow(name = "") {
   `;
   rowsEl.appendChild(row);
   wireRow(row);
+  syncStudentLoanFromTaxCode(row);
   recalculate();
+}
+
+function syncStudentLoanFromTaxCode(row) {
+  const taxCode = row.querySelector(".tax-code").value;
+  const studentLoan = row.querySelector(".student-loan");
+  if (taxCode.includes("SL")) studentLoan.checked = true;
 }
 
 function wireRow(row) {
   row.querySelectorAll("input, select").forEach((input) => {
     input.addEventListener("input", () => {
+      if (input.classList.contains("tax-code")) syncStudentLoanFromTaxCode(row);
       recalculate();
     });
     input.addEventListener("change", () => {
+      if (input.classList.contains("tax-code")) syncStudentLoanFromTaxCode(row);
       recalculate();
     });
   });
@@ -299,7 +311,7 @@ function recalculate() {
     const employeeName = row.querySelector(".employee-name").value || "Employee";
     const amount = numberValue(row.querySelector(".pay-amount").value);
     const taxCode = row.querySelector(".tax-code").value;
-    const studentLoan = row.querySelector(".student-loan").checked;
+    const studentLoan = row.querySelector(".student-loan").checked || taxCode.includes("SL");
     const options = {
       config,
       periods,
