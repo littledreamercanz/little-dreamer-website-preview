@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pawora Pets | NZ/AU Pet Accessories</title>
+    <meta
+      name="description"
+      content="Pawora Pets is a colorful NZ/AU cross-border pet accessories ecommerce preview for dogs, cats, grooming, travel and aquarium accessories."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Pawora Pets home">
+        <span class="brand-mark">P</span>
+        <span>Pawora Pets</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#shop">Shop</a>
+        <a href="#categories">分类</a>
+        <a href="#warehouse">仓库履约</a>
+        <a href="#launch">启动方案</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" type="button" data-search-toggle aria-label="Search products" title="Search products">
+          <span class="icon-search"></span>
+        </button>
+        <button class="cart-button" type="button" data-open-cart aria-label="Open cart">
+          <span class="icon-bag"></span>
+          <strong data-cart-count>0</strong>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <img src="assets/hero-pets.png" alt="Happy dog and cat with pet accessories in a bright living room" />
+        <div class="hero-copy">
+          <p class="eyebrow">NZ local stock · China sourced · Chinese service</p>
+          <h1>给猫狗和小鱼缸的彩色生活周边。</h1>
+          <p>
+            先从低风险宠物配件开始：衣服、出行包、胸背牵引、梳理工具、玩具和水族过滤周边。
+            客人线上选款下单，本地仓库发货。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#shop">开始选购</a>
+            <a class="button ghost" href="#warehouse">查看履约流程</a>
+          </div>
+        </div>
+        <div class="hero-badges" aria-label="Store highlights">
+          <span>NZ 现货</span>
+          <span>猫狗优先</span>
+          <span>不卖食品药品</span>
+        </div>
+      </section>
+
+      <section class="search-panel" data-search-panel hidden>
+        <label>
+          搜索产品
+          <input type="search" placeholder="例如：外出包、梳子、过滤棉" data-search-input />
+        </label>
+      </section>
+
+      <section class="quick-stats" aria-label="Store model">
+        <div><strong>48h</strong><span>NZ 现货打包目标</span></div>
+        <div><strong>42</strong><span>MVP 示例 SKU</span></div>
+        <div><strong>5</strong><span>首发产品分类</span></div>
+        <div><strong>0</strong><span>食品/药品/保健品</span></div>
+      </section>
+
+      <section class="section" id="categories">
+        <div class="section-heading">
+          <p class="eyebrow">Product families</p>
+          <h2>丰富但不冒险的首发分类</h2>
+          <p>以猫狗用品为主，加入鱼缸非食品周边。每个分类都适合线上选款、仓库发货和微信/Facebook 推广。</p>
+        </div>
+        <div class="category-layout">
+          <article class="category-tile large">
+            <img src="assets/category-pet-gear.png" alt="Pet carriers, clothing, harnesses and toys" />
+            <div>
+              <span>Dogs & Cats</span>
+              <h3>出行、穿搭、梳理、玩具</h3>
+              <button type="button" data-jump-filter="dog">看猫狗用品</button>
+            </div>
+          </article>
+          <article class="category-tile aquarium">
+            <img src="assets/category-aquarium.png" alt="Aquarium filter and fish tank accessories" />
+            <div>
+              <span>Aquarium</span>
+              <h3>过滤、清洁、鱼网、水管</h3>
+              <button type="button" data-jump-filter="aquarium">看水族周边</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section shop-section" id="shop">
+        <div class="section-heading row">
+          <div>
+            <p class="eyebrow">Shop preview</p>
+            <h2>客人可直接选规格下单</h2>
+            <p>这里是预览版。正式接 Shopify 后，商品、库存、支付和订单会进入后台管理。</p>
+          </div>
+          <div class="ship-pill">
+            <span>Fulfilled from</span>
+            <strong>Auckland mini warehouse</strong>
+          </div>
+        </div>
+
+        <div class="filters" role="group" aria-label="Product category filters">
+          <button class="filter active" type="button" data-filter="all">全部</button>
+          <button class="filter" type="button" data-filter="dog">狗狗</button>
+          <button class="filter" type="button" data-filter="cat">猫咪</button>
+          <button class="filter" type="button" data-filter="travel">出行</button>
+          <button class="filter" type="button" data-filter="grooming">梳理</button>
+          <button class="filter" type="button" data-filter="aquarium">水族</button>
+        </div>
+
+        <div class="product-grid" data-product-grid></div>
+      </section>
+
+      <section class="section warehouse" id="warehouse">
+        <div class="section-heading">
+          <p class="eyebrow">Warehouse flow</p>
+          <h2>从中国选货到新西兰发货</h2>
+          <p>初期建议本地小库存，不做中国直发。这样微信客户和 Facebook 客户都能获得更快的体验。</p>
+        </div>
+        <div class="flow-grid">
+          <article><strong>01</strong><h3>中国选品</h3><p>供应商提供材质、尺寸、重量、MOQ、样品和包装方式。</p></article>
+          <article><strong>02</strong><h3>NZ 入库</h3><p>样品测试后小批量到新西兰，建立 SKU、颜色、尺码和库存表。</p></article>
+          <article><strong>03</strong><h3>线上下单</h3><p>客户通过 Shopify 选择规格、支付、填写地址和配送方式。</p></article>
+          <article><strong>04</strong><h3>本地发货</h3><p>Auckland 小仓打包，NZ Post / CourierPost / Aramex 发货。</p></article>
+        </div>
+      </section>
+
+      <section class="section launch" id="launch">
+        <div class="section-heading">
+          <p class="eyebrow">Launch playbook</p>
+          <h2>第一阶段只做能验证的事</h2>
+        </div>
+        <div class="launch-grid">
+          <div>
+            <h3>微信私域首发</h3>
+            <p>朋友圈、微信群、晒单、团购链接。主打“本地现货 + 中文客服 + 可爱实用”。</p>
+          </div>
+          <div>
+            <h3>Facebook/Instagram 测款</h3>
+            <p>小预算测试狗衣服、外出包、梳毛工具和水族清洁周边，保留点击和加购好的 SKU。</p>
+          </div>
+          <div>
+            <h3>不碰高风险品</h3>
+            <p>不卖食品、零食、保健品、药品、驱虫、洗护液、动物源材料和植物源材料。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="drawer" data-cart aria-hidden="true">
+      <div class="drawer-panel">
+        <button class="close-button" type="button" data-close-cart aria-label="Close cart">×</button>
+        <h2>购物车预览</h2>
+        <div class="cart-items" data-cart-items></div>
+        <div class="cart-summary">
+          <div><span>商品小计</span><strong data-cart-subtotal>NZ$0.00</strong></div>
+          <div><span>NZ 本地配送</span><strong data-cart-shipping>NZ$6.90</strong></div>
+          <div class="total"><span>预估合计</span><strong data-cart-total>NZ$0.00</strong></div>
+        </div>
+        <form class="checkout-form">
+          <label>配送区域
+            <select data-region>
+              <option value="nz">New Zealand local delivery</option>
+              <option value="au">Australia quote request</option>
+            </select>
+          </label>
+          <button class="button primary full" type="button" data-checkout>模拟下单到仓库</button>
+          <p data-checkout-note>正式版会接 Shopify checkout，并把订单同步到仓库拣货。</p>
+        </form>
+      </div>
+    </aside>
+
+    <dialog class="product-dialog" data-product-dialog>
+      <button class="close-button" type="button" data-close-dialog aria-label="Close product">×</button>
+      <div class="dialog-grid">
+        <div class="dialog-art" data-dialog-art></div>
+        <div class="dialog-info">
+          <p class="eyebrow" data-dialog-category></p>
+          <h2 data-dialog-name></h2>
+          <p data-dialog-description></p>
+          <div class="option-row">
+            <label>颜色
+              <select data-option-color></select>
+            </label>
+            <label>规格
+              <select data-option-size></select>
+            </label>
+          </div>
+          <div class="warehouse-note">
+            <span>仓库状态</span>
+            <strong data-dialog-stock></strong>
+          </div>
+          <div class="dialog-buy">
+            <strong data-dialog-price></strong>
+            <button class="button primary" type="button" data-add-selected>加入购物车</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>

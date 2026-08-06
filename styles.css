@@ -1297,6 +1297,351 @@ blockquote p {
   text-transform: none;
 }
 
+.deadline-hero {
+  background:
+    linear-gradient(90deg, rgba(7, 28, 51, 0.96), rgba(16, 47, 78, 0.78)),
+    url("assets/advisory-desk.png") center / cover;
+}
+
+.deadline-tool-section {
+  background: var(--white);
+}
+
+.deadline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.deadline-note {
+  margin: 0 0 18px;
+  padding: 16px 18px;
+  color: #314457;
+  background: var(--gold-soft);
+  border: 1px solid rgba(185, 138, 58, 0.35);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.deadline-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.deadline-summary-grid article {
+  padding: 20px;
+  background: #f7fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.deadline-summary-grid span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.deadline-summary-grid strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--blue);
+  font-size: 1.9rem;
+}
+
+.deadline-form,
+.deadline-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 22px;
+  padding: 22px;
+  background: #f7fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.deadline-form-heading,
+.deadline-form .full {
+  grid-column: 1 / -1;
+}
+
+.deadline-form h2 {
+  max-width: 820px;
+  margin-bottom: 8px;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  line-height: 1.08;
+}
+
+.deadline-form label,
+.deadline-filter-bar label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.deadline-form input,
+.deadline-form select,
+.deadline-form textarea,
+.deadline-filter-bar input,
+.deadline-filter-bar select,
+.deadline-table select {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 750;
+}
+
+.deadline-form textarea {
+  min-height: 88px;
+  padding: 12px;
+  resize: vertical;
+}
+
+.deadline-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.deadline-table {
+  width: 100%;
+  min-width: 1500px;
+  border-collapse: collapse;
+  background: white;
+}
+
+.deadline-table th,
+.deadline-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.deadline-table th {
+  color: #46586b;
+  background: #f4f7fa;
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.deadline-table td strong,
+.deadline-table td small {
+  display: block;
+}
+
+.deadline-table td small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.priority-pill {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 0 9px;
+  background: #eef5f8;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.deadline-table tr[data-priority="Overdue"] .priority-pill {
+  color: #8a2424;
+  background: #fff0ed;
+}
+
+.deadline-table tr[data-priority="Next 7 days"] .priority-pill {
+  color: #6b4700;
+  background: #fff4d6;
+}
+
+.deadline-table tr[data-priority="Done"] .priority-pill {
+  color: #1e6b42;
+  background: #e8f6ee;
+}
+
+.empty-row {
+  color: var(--muted);
+  text-align: center;
+}
+
+.deadline-source-panel {
+  margin-top: 24px;
+  padding: 24px;
+  background: #f7fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.deadline-source-panel h2 {
+  margin-bottom: 12px;
+  font-size: 1.6rem;
+}
+
+.deadline-source-panel p {
+  color: var(--muted);
+}
+
+.source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.source-links a {
+  color: var(--blue);
+  font-weight: 850;
+}
+
+.resources-hero {
+  background:
+    linear-gradient(90deg, rgba(7, 28, 51, 0.96), rgba(16, 47, 78, 0.78)),
+    url("assets/cfo-advisory.png") center / cover;
+}
+
+.resources-section {
+  background: var(--white);
+}
+
+.resources-disclaimer {
+  margin: 0 0 18px;
+  padding: 16px 18px;
+  color: #314457;
+  background: var(--gold-soft);
+  border: 1px solid rgba(185, 138, 58, 0.35);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.resource-controls {
+  display: grid;
+  grid-template-columns: minmax(240px, 360px) 1fr;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 24px;
+  padding: 18px;
+  background: #f7fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.resource-controls label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.resource-controls input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 750;
+}
+
+.resource-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.resource-filter-buttons button {
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 850;
+}
+
+.resource-filter-buttons button[aria-pressed="true"] {
+  color: white;
+  background: var(--navy);
+  border-color: var(--navy);
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.resource-card {
+  position: relative;
+  display: block;
+  min-height: 230px;
+  padding: 24px;
+  color: inherit;
+  background: #fbfcfd;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 52px rgba(7, 28, 51, 0.13);
+  border-color: rgba(31, 102, 148, 0.32);
+}
+
+.resource-card span {
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.resource-card h2 {
+  margin: 16px 0 10px;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.resource-card p {
+  color: var(--muted);
+}
+
+.resource-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 22px 20px auto;
+  width: 38px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.resource-card[hidden] {
+  display: none;
+}
+
 .reveal-item {
   opacity: 0;
   transform: translateY(22px);
@@ -1585,12 +1930,16 @@ footer p {
   .service-split,
   .paye-toolbar,
   .paye-detail-panel,
+  .deadline-form,
+  .deadline-filter-bar,
+  .resource-controls,
   .insight-section,
   .contact-section {
     grid-template-columns: 1fr;
   }
 
-  .paye-summary-grid {
+  .paye-summary-grid,
+  .deadline-summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1676,14 +2025,19 @@ footer p {
   .page-link-grid,
   .industry-grid,
   .case-grid,
+  .resource-grid,
   .trust-grid,
   .inquiry-form,
   .paye-summary-grid,
+  .deadline-summary-grid,
   .fee-list {
     grid-template-columns: 1fr;
   }
 
-  .paye-detail-panel {
+  .paye-detail-panel,
+  .deadline-form,
+  .deadline-filter-bar,
+  .deadline-source-panel {
     padding: 22px;
   }
 

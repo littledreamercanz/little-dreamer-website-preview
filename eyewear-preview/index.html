@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pacific Lens Co. | NZ/AU Eyewear MVP</title>
+    <meta
+      name="description"
+      content="A compliance-aware eyewear ecommerce MVP for New Zealand and Australia: frames, sunglasses, blue-light lenses, and controlled prescription fulfillment."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Pacific Lens Co. home">
+        <span class="brand-mark">PL</span>
+        <span>Pacific Lens Co.</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#shop">商品</a>
+        <a href="#prescription">处方服务</a>
+        <a href="#compliance">合规</a>
+        <a href="#launch">启动计划</a>
+      </nav>
+      <button class="cart-button" type="button" data-open-cart>
+        <span class="cart-icon" aria-hidden="true">□</span>
+        <span>试算单</span>
+        <strong data-cart-count>0</strong>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="Store overview">
+        <img src="assets/hero-eyewear.png" alt="Eyeglass frames and sunglasses arranged on a clean optical retail table" />
+        <div class="hero-copy">
+          <p class="eyebrow">NZ / AU cross-border eyewear MVP</p>
+          <h1>先卖低风险眼镜商品，再谨慎开放处方配镜。</h1>
+          <p>
+            独立站第一版聚焦镜框、太阳镜、蓝光镜和配件。带度数镜片作为人工审核服务处理，
+            不做在线验光，不碰隐形眼镜和复杂处方。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#shop">查看首批商品</a>
+            <a class="button secondary" href="#prescription">处方流程</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Launch assumptions">
+        <div>
+          <span>目标市场</span>
+          <strong>New Zealand + Australia</strong>
+        </div>
+        <div>
+          <span>首发品类</span>
+          <strong>镜框 / 太阳镜 / 蓝光镜</strong>
+        </div>
+        <div>
+          <span>处方策略</span>
+          <strong>人工审核后报价</strong>
+        </div>
+        <div>
+          <span>MVP 预算</span>
+          <strong>低月费 + 少量 app</strong>
+        </div>
+      </section>
+
+      <section class="section" id="shop">
+        <div class="section-heading">
+          <p class="eyebrow">Shop</p>
+          <h2>首批可卖商品</h2>
+          <p>先用简单 SKU 测试转化，所有商品都能不依赖验光完成交易。</p>
+        </div>
+
+        <div class="toolbar" role="group" aria-label="Product filters">
+          <button class="filter active" type="button" data-filter="all">全部</button>
+          <button class="filter" type="button" data-filter="frame">镜框</button>
+          <button class="filter" type="button" data-filter="sunglasses">太阳镜</button>
+          <button class="filter" type="button" data-filter="blue">蓝光镜</button>
+        </div>
+
+        <div class="product-grid" data-products>
+          <article class="product-card" data-category="frame">
+            <div class="product-visual acetate"></div>
+            <div class="product-body">
+              <span class="tag">低风险 SKU</span>
+              <h3>Harbour 01 轻量镜框</h3>
+              <p>适合先卖镜框，可加配平光或基础单光镜片。</p>
+              <div class="product-meta">
+                <strong>NZ$89</strong>
+                <button type="button" data-add="Harbour 01 轻量镜框" data-price="89">加入试算</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="sunglasses">
+            <div class="product-visual sun"></div>
+            <div class="product-body">
+              <span class="tag">推荐首发</span>
+              <h3>Coastline 偏光太阳镜</h3>
+              <p>无需处方，适合广告投放和跨境小包测试。</p>
+              <div class="product-meta">
+                <strong>NZ$119</strong>
+                <button type="button" data-add="Coastline 偏光太阳镜" data-price="119">加入试算</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="blue">
+            <div class="product-visual blue"></div>
+            <div class="product-body">
+              <span class="tag">办公场景</span>
+              <h3>Studio Blue 蓝光镜</h3>
+              <p>平光成品，适合华人办公室和学生用户。</p>
+              <div class="product-meta">
+                <strong>NZ$69</strong>
+                <button type="button" data-add="Studio Blue 蓝光镜" data-price="69">加入试算</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card" data-category="frame">
+            <div class="product-visual metal"></div>
+            <div class="product-body">
+              <span class="tag">可加处方</span>
+              <h3>Metro 18 钛感镜框</h3>
+              <p>后续可接单光处方，复杂处方先人工拒单或转介绍。</p>
+              <div class="product-meta">
+                <strong>NZ$139</strong>
+                <button type="button" data-add="Metro 18 钛感镜框" data-price="139">加入试算</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split" id="prescription">
+        <div class="section-heading compact">
+          <p class="eyebrow">Prescription service</p>
+          <h2>处方配镜只做“审核后服务”</h2>
+          <p>
+            网站可以收集客户处方，但不替客户验光、不建议度数、不保证所有处方可做。
+            客户提交后由人工确认参数、风险和报价。
+          </p>
+        </div>
+        <form class="rx-panel" data-rx-form>
+          <label>
+            目标国家
+            <select name="market">
+              <option>New Zealand</option>
+              <option>Australia</option>
+            </select>
+          </label>
+          <label>
+            镜片类型
+            <select name="lens">
+              <option value="40">平光 / 蓝光</option>
+              <option value="90">基础单光处方</option>
+              <option value="160">高折射率单光</option>
+            </select>
+          </label>
+          <div class="rx-grid">
+            <label>
+              SPH 绝对值
+              <input name="sph" type="number" min="0" max="12" step="0.25" value="2.00" />
+            </label>
+            <label>
+              CYL 绝对值
+              <input name="cyl" type="number" min="0" max="6" step="0.25" value="0.50" />
+            </label>
+          </div>
+          <label class="check-row">
+            <input name="pd" type="checkbox" />
+            处方包含 PD 或客户可提供 PD
+          </label>
+          <label class="check-row">
+            <input name="recent" type="checkbox" />
+            处方日期在最近 24 个月内
+          </label>
+          <div class="rx-result" aria-live="polite">
+            <span>预估镜片服务费</span>
+            <strong data-rx-total>NZ$90</strong>
+            <p data-rx-note>请补充 PD 和处方日期后再进入人工审核。</p>
+          </div>
+        </form>
+      </section>
+
+      <section class="section" id="compliance">
+        <div class="section-heading">
+          <p class="eyebrow">Compliance guardrails</p>
+          <h2>合规边界</h2>
+          <p>这些内容应该在 Shopify 页面、政策页和客服 SOP 里写清楚。</p>
+        </div>
+        <div class="guardrail-grid">
+          <article>
+            <h3>新西兰</h3>
+            <p>处方镜片按医疗器械思路处理；供应方需要核对 WAND sponsor/notification 责任。GST 按 NZ$60,000 注册门槛和低价值进口商品规则规划。</p>
+          </article>
+          <article>
+            <h3>澳洲</h3>
+            <p>矫正视力相关产品要按 TGA 医疗器械框架确认 ARTG、豁免或个性化器械路径。上线前建议找本地合规律师或 consultant 做最终确认。</p>
+          </article>
+          <article>
+            <h3>网站承诺</h3>
+            <p>不提供验光、不开处方、不修改处方参数。高风险订单转人工审核，必要时拒单退款。</p>
+          </article>
+          <article>
+            <h3>质量记录</h3>
+            <p>每副处方镜保留处方、客户确认、加工单、出厂质检、物流单号和售后记录。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section launch" id="launch">
+        <div class="section-heading compact">
+          <p class="eyebrow">Launch plan</p>
+          <h2>30 天启动路径</h2>
+          <p>先验证市场和供应链，不一开始就背复杂医疗服务风险。</p>
+        </div>
+        <ol class="timeline">
+          <li><strong>第 1 周</strong><span>确定品牌、公司主体、域名、Shopify 基础设置。</span></li>
+          <li><strong>第 2 周</strong><span>上架 20-40 个低风险 SKU，完成退换货、隐私、运输和 GST 文案。</span></li>
+          <li><strong>第 3 周</strong><span>测试支付、物流、客服脚本，找 5-10 个真实客户试单。</span></li>
+          <li><strong>第 4 周</strong><span>开放处方配镜 waitlist，只接简单单光处方，记录问题和退款率。</span></li>
+        </ol>
+      </section>
+    </main>
+
+    <aside class="cart-drawer" aria-hidden="true" data-cart>
+      <div class="cart-panel">
+        <button class="close-button" type="button" data-close-cart aria-label="Close cart">×</button>
+        <h2>启动试算单</h2>
+        <div data-cart-items class="cart-items"></div>
+        <div class="cart-total">
+          <span>商品小计</span>
+          <strong data-cart-total>NZ$0</strong>
+        </div>
+        <p>这是 MVP 试算，不会真实下单。迁移到 Shopify 后可接入产品变体、支付和税费。</p>
+      </div>
+    </aside>
+
+    <script src="script.js"></script>
+  </body>
+</html>

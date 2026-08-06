@@ -1,5 +1,31 @@
 # Little Dreamer Ltd Website Versions
 
+## v1.6 - Tax client deadline tracker
+
+- Added a new Tax Client Deadline Tracker under `/client-tax-deadline-tracker.html` and `/en/client-tax-deadline-tracker.html`.
+- Added a downloadable Excel workbook template at `/assets/little-dreamer-tax-deadline-tracker.xlsx` with Dashboard, Clients, Obligations, Due Rules and Sources sheets.
+- Added browser-based localStorage tracking for client GST, PAYE deductions, payday filing, income tax return, provisional tax and RWT / withholding obligations.
+- Added default due date estimates for common IRD timing rules, plus manual due date override for tax agent EOT, myIR letters, negotiated dates and non-standard client settings.
+- Added filtering by tax type, status and client search, summary cards, status updates, sample rows and CSV export.
+- Added IRD source links and caution notes that myIR remains the source of truth.
+- Previous production version remains archived as `v1.5` for rollback.
+
+## v1.5 - Tools section and PAYE calculator
+
+- Added a top-level `财务工具 / Tools` navigation item.
+- Added a tools landing page in Chinese and English.
+- Added a PAYE Net Pay Calculator with employee rows, gross-to-net, net-to-gross, M / M SL / ME / ME SL tax code options, KiwiSaver, employer KiwiSaver, ESCT, Total to IRD and CSV export.
+- Previous production version remains archived as `v1.4` for rollback.
+
+## v1.4 - Bilingual Chinese and English website
+
+- Added a full English website under `/en/` with English homepage, services, pricing, credentials, contact and six individual service pages.
+- Added language switch buttons in the top navigation: Chinese pages link to `EN`, and English pages link back to `中文`.
+- Rewrote English content for New Zealand English-speaking clients rather than using direct word-for-word translation.
+- Kept the Chinese website as the default version at the main domain.
+- Updated static asset version numbers to reduce browser cache issues after deployment.
+- Previous production version remains archived as `v1.3` for rollback.
+
 ## v1.3 - Market positioning and conversion content
 
 - Added stronger trust signals: Xero Certified Advisor, MYOB Certified Advisor, CA ANZ, CPA Australia, registered IRD tax agent in New Zealand, and CFO / Finance Manager experience.

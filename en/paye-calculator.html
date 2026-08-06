@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en-NZ">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PAYE Net Pay Calculator | Little Dreamer Ltd</title>
+    <meta name="description" content="New Zealand PAYE, net pay, gross pay, KiwiSaver and student loan estimate tool by Little Dreamer Ltd.">
+    <link rel="stylesheet" href="../styles.css?v=10">
+    <script defer src="../paye-calculator.js?v=4"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Little Dreamer Ltd home">
+        <span class="brand-mark">LD</span>
+        <span><strong>Little Dreamer Ltd</strong><small>Chartered Accountant · CPA · Tax Agent</small></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="tools.html" aria-current="page">Tools</a>
+        <a href="about.html">Credentials</a>
+        <a href="contact.html">Contact</a>
+        <a class="lang-switch" href="../paye-calculator.html" hreflang="zh-Hans">中文</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero paye-hero">
+        <p class="eyebrow">Payroll tool</p>
+        <h1>NZ PAYE / Net Pay Calculator</h1>
+        <p>Enter employee pay, period, income type, KiwiSaver and student loan settings to estimate gross pay, PAYE deductions, employer KiwiSaver, ESCT, total to IRD and net pay.</p>
+      </section>
+
+      <section class="section paye-tool-section">
+        <div class="paye-toolbar">
+          <label>Tax year<select id="taxYear"><option value="2025-26">2025-26</option><option value="2026-27">2026-27 draft</option></select></label>
+          <label>Calculation mode<select id="calcMode"><option value="grossToNet">Gross to net</option><option value="netToGross">Net to gross</option></select></label>
+          <label>Pay period<select id="payPeriod"><option value="52">Weekly</option><option value="26">Fortnightly</option><option value="13">Four-weekly</option><option value="12">Monthly</option><option value="1">Annual</option></select></label>
+          <label>Pay date<input id="payDate" type="date"></label>
+          <button class="button primary dark-button" id="addEmployee" type="button">Add employee</button>
+          <button class="button secondary export-button" id="downloadCsv" type="button">Download CSV</button>
+        </div>
+
+        <div class="paye-note">
+          <strong>Important:</strong>
+          This calculator is an estimate for planning only. PAYE, ACC earners' levy, student loan, KiwiSaver and ESCT settings can change.
+          For filing, use IRD payroll guidance, payday filing software or the official IRD calculator.
+          "To IRD" includes PAYE/ACC/student loan deductions, employee KiwiSaver and gross employer KiwiSaver contribution.
+          Student loan can be selected through M SL / ME SL or the separate checkbox for other scenarios.
+        </div>
+
+        <div class="paye-table-wrap">
+          <table class="paye-table" aria-label="PAYE employee calculator">
+            <thead>
+              <tr><th>Employee</th><th>Amount</th><th>Income type</th><th>Employee KS</th><th>Employer KS</th><th>Student loan</th><th>Gross</th><th>PAYE/ACC/SL</th><th>Employee KS</th><th>Employer KS gross</th><th>ESCT</th><th>Employer KS net</th><th>Net pay</th><th>To IRD</th><th></th></tr>
+            </thead>
+            <tbody id="employeeRows"></tbody>
+          </table>
+        </div>
+
+        <div class="paye-summary-grid">
+          <article><span>Total gross</span><strong id="totalGross">$0.00</strong></article>
+          <article><span>Total PAYE/ACC/SL</span><strong id="totalPaye">$0.00</strong></article>
+          <article><span>Total employee KiwiSaver</span><strong id="totalEmployeeKiwiSaver">$0.00</strong></article>
+          <article><span>Total net pay</span><strong id="totalNet">$0.00</strong></article>
+          <article><span>Total employer KiwiSaver</span><strong id="totalEmployerKiwiSaver">$0.00</strong></article>
+          <article><span>Total ESCT</span><strong id="totalEsct">$0.00</strong></article>
+          <article><span>Total to IRD</span><strong id="totalIrd">$0.00</strong></article>
+          <article><span>Total employer cash cost</span><strong id="totalEmployerCost">$0.00</strong></article>
+        </div>
+
+        <div class="paye-detail-panel">
+          <div>
+            <p class="section-label">Supported scope</p>
+            <h2>Draft calculation coverage</h2>
+            <p>Common income types: M, M SL, ME, ME SL, secondary income and no declaration. Student loan can also be selected separately. Supports common pay periods, gross-to-net, net-to-gross, employee KiwiSaver, employer KiwiSaver, ESCT and student loan estimates.</p>
+          </div>
+          <div class="paye-rules">
+            <span>2025-26 income tax brackets loaded</span>
+            <span>ACC earners' levy estimate included</span>
+            <span>ME includes an independent earner tax credit estimate</span>
+            <span>Employee and employer KiwiSaver included</span>
+            <span>ESCT rate auto-estimated from annualised pay</span>
+            <span>Student loan threshold estimate included</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Little Dreamer Ltd.</p>
+      <p>PAYE calculator information is general only and should be checked against IRD rules for the relevant pay date.</p>
+    </footer>
+  </body>
+</html>

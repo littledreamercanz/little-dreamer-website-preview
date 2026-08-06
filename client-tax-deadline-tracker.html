@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tax Client Deadline Tracker | Little Dreamer Ltd</title>
+    <meta name="description" content="Tax agent client deadline tracker for GST, PAYE, income tax, provisional tax and withholding tax obligations.">
+    <link rel="stylesheet" href="styles.css?v=11">
+    <script defer src="client-tax-deadline-tracker.js?v=1"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Little Dreamer Ltd home">
+        <span class="brand-mark">LD</span>
+        <span><strong>Little Dreamer Ltd</strong><small>Chartered Accountant · CPA · Tax Agent</small></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="index.html">首页</a>
+        <a href="services.html">服务</a>
+        <a href="pricing.html">报价</a>
+        <a href="tools.html" aria-current="page">财务工具</a>
+        <a href="about.html">资质</a>
+        <a href="contact.html">联系</a>
+        <a class="lang-switch" href="en/client-tax-deadline-tracker.html" hreflang="en">EN</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero deadline-hero">
+        <p class="eyebrow">Tax agent workflow tool</p>
+        <h1>Client Tax Deadline Tracker</h1>
+        <p>
+          管理客户 GST、PAYE、income tax、provisional tax、withholding tax 的 due queue。
+          默认日期只作提醒，Tax Agent EOT、myIR letter、非标准 balance date 或 negotiated date 请用 Manual due date 覆盖。
+        </p>
+      </section>
+
+      <section class="section deadline-tool-section">
+        <div class="deadline-actions">
+          <a class="button primary dark-button" href="assets/little-dreamer-tax-deadline-tracker.xlsx" download>Download Excel template</a>
+          <button class="button secondary export-button" id="exportCsv" type="button">Export current view CSV</button>
+          <button class="button secondary" id="loadSample" type="button">Load sample rows</button>
+        </div>
+
+        <div class="deadline-note">
+          <strong>Important:</strong>
+          This is a workflow tracker, not an IRD filing system. Always confirm due dates in myIR, IRD correspondence and the client's actual account settings. If a due date falls on a weekend or public holiday, IRD payment timing rules may move the practical deadline.
+        </div>
+
+        <div class="deadline-summary-grid" aria-label="Deadline summary">
+          <article><span>Total clients</span><strong id="totalClients">0</strong></article>
+          <article><span>Open items</span><strong id="openItems">0</strong></article>
+          <article><span>Due next 7 days</span><strong id="dueSeven">0</strong></article>
+          <article><span>Overdue</span><strong id="overdueItems">0</strong></article>
+        </div>
+
+        <form class="deadline-form" id="deadlineForm">
+          <div class="deadline-form-heading">
+            <p class="section-label">Add client obligation</p>
+            <h2>输入客户和税种，自动生成基础 due date。</h2>
+          </div>
+          <label>Client name<input name="clientName" required placeholder="Example Construction Ltd"></label>
+          <label>IRD number<input name="irdNumber" placeholder="123-456-789"></label>
+          <label>Contact person<input name="contactPerson" placeholder="Director / owner"></label>
+          <label>Phone<input name="phone" placeholder="021 ..."></label>
+          <label>Email<input name="email" type="email" placeholder="client@example.co.nz"></label>
+          <label>Entity type<select name="entityType"><option>Company</option><option>Individual</option><option>Sole trader</option><option>Trust</option><option>Partnership</option><option>Other</option></select></label>
+          <label>Tax type<select name="taxType"><option>GST</option><option>PAYE deductions</option><option>Payday filing</option><option>Income tax return</option><option>Provisional tax</option><option>RWT / withholding</option><option>Other</option></select></label>
+          <label>Frequency<select name="frequency"><option>Monthly</option><option>2-monthly</option><option>6-monthly</option><option>Annual</option><option>Each payday</option><option>One-off</option></select></label>
+          <label>Period end / payday<input name="periodDate" type="date" required></label>
+          <label>Instalment<select name="instalment"><option value="">N/A</option><option value="1">Provisional 1</option><option value="2">Provisional 2</option><option value="3">Provisional 3</option></select></label>
+          <label>PAYE employer size<select name="employerSize"><option>Small/medium</option><option>Large</option><option>N/A</option></select></label>
+          <label>Tax Agent EOT<select name="eot"><option>Yes</option><option>No</option><option>N/A</option></select></label>
+          <label>Manual due date<input name="manualDueDate" type="date"></label>
+          <label>Status<select name="status"><option>Not started</option><option>Waiting on client</option><option>In progress</option><option>Ready to file/pay</option><option>Filed/Paid</option></select></label>
+          <label class="full">Notes<textarea name="notes" rows="3" placeholder="myIR note, EOT detail, responsible person, documents waiting..."></textarea></label>
+          <button class="button primary dark-button" type="submit">Add to tracker</button>
+        </form>
+
+        <div class="deadline-filter-bar">
+          <label>Tax type<select id="filterTax"><option value="">All tax types</option><option>GST</option><option>PAYE deductions</option><option>Payday filing</option><option>Income tax return</option><option>Provisional tax</option><option>RWT / withholding</option><option>Other</option></select></label>
+          <label>Status<select id="filterStatus"><option value="">All status</option><option>Not started</option><option>Waiting on client</option><option>In progress</option><option>Ready to file/pay</option><option>Filed/Paid</option></select></label>
+          <label>Client search<input id="filterClient" type="search" placeholder="Search client, IRD, email"></label>
+        </div>
+
+        <div class="deadline-table-wrap">
+          <table class="deadline-table" aria-label="Client tax deadline queue">
+            <thead>
+              <tr>
+                <th>Client</th><th>IRD</th><th>Tax type</th><th>Period</th><th>Auto due</th><th>Manual due</th><th>Final due</th><th>Days</th><th>Priority</th><th>Status</th><th>Contact</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="deadlineRows"></tbody>
+          </table>
+        </div>
+
+        <div class="deadline-source-panel">
+          <h2>Built-in default rules</h2>
+          <p>GST: period end 后下月 28 日，31 March 期为 7 May，30 November 期为 15 January。PAYE deductions: 小中雇主通常下月 20 日；大雇主 1-15 日同月 20 日、16-end 下月 5 日，12 月下半月 15 January。Payday filing: 电子申报通常 payday 后 2 个工作日。Income tax / EOT 和 provisional tax 需要按 myIR 和客户情况确认。</p>
+          <p class="source-links">
+            Sources:
+            <a href="https://www.ird.govt.nz/gst/filing-and-paying-gst-and-refunds/paying-gst">IRD GST</a>
+            <a href="https://www.ird.govt.nz/employing-staff/payday-filing/paying-deductions-to-inland-revenue">IRD PAYE deductions</a>
+            <a href="https://www.ird.govt.nz/payday">IRD payday filing</a>
+            <a href="https://www.ird.govt.nz/income-tax/provisional-tax/paying-your-provisional-tax/payment-dates-for-provisional-tax">IRD provisional tax</a>
+            <a href="https://www.ird.govt.nz/topics/intermediaries/extension-of-time-arrangements/filing-for-extensions-of-time-arrangements">IRD EOT</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer><p>© 2026 Little Dreamer Ltd.</p><p>Tax deadline tracker information is general only and must be checked against IRD records.</p></footer>
+  </body>
+</html>
