@@ -25,6 +25,16 @@ async function startFinanceScene(canvas) {
       metalness: 0.08,
       transmission: 0.24
     });
+    const panelMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x16324a,
+      transparent: true,
+      opacity: 0.28,
+      roughness: 0.22,
+      metalness: 0.16,
+      transmission: 0.1,
+      side: THREE.DoubleSide
+    });
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xdceff2, transparent: true, opacity: 0.52 });
 
     const ring = new THREE.Mesh(new THREE.TorusGeometry(1.9, 0.018, 12, 128), gold);
     ring.rotation.x = Math.PI * 0.52;
@@ -44,6 +54,22 @@ async function startFinanceScene(canvas) {
       bars.push(bar);
     }
 
+    const panels = [];
+    for (let i = 0; i < 4; i += 1) {
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(1.12, 0.62), panelMaterial);
+      panel.position.set(-2.2 + i * 1.45, 0.98 + Math.sin(i) * 0.18, -0.42 - i * 0.05);
+      panel.rotation.x = -0.18;
+      panel.rotation.y = 0.18;
+      group.add(panel);
+      panels.push(panel);
+
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.035, 0.018), i % 2 ? gold : blue);
+      rail.position.set(panel.position.x, panel.position.y + 0.12, panel.position.z + 0.02);
+      rail.rotation.copy(panel.rotation);
+      group.add(rail);
+      panels.push(rail);
+    }
+
     const nodes = [];
     for (let i = 0; i < 16; i += 1) {
       const node = new THREE.Mesh(new THREE.SphereGeometry(0.045, 18, 18), i % 4 === 0 ? gold : glass);
@@ -52,6 +78,10 @@ async function startFinanceScene(canvas) {
       group.add(node);
       nodes.push(node);
     }
+
+    const curvePoints = nodes.slice(0, 9).map((node) => node.position.clone());
+    const dataLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curvePoints), lineMaterial);
+    group.add(dataLine);
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.6));
     const key = new THREE.DirectionalLight(0xffffff, 2.2);
@@ -77,6 +107,9 @@ async function startFinanceScene(canvas) {
       innerRing.rotation.z = -t * 0.26;
       bars.forEach((bar, i) => {
         bar.scale.y = 1 + Math.sin(t * 1.4 + i) * 0.08;
+      });
+      panels.forEach((panel, i) => {
+        panel.position.y += Math.sin(t * 0.9 + i) * 0.0009;
       });
       nodes.forEach((node, i) => {
         node.position.y += Math.sin(t + i) * 0.0008;
