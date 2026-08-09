@@ -1,5 +1,14 @@
 # Little Dreamer Ltd Website Versions
 
+## v1.7 - Useful resources hub
+
+- Added a new Useful Resources page under `/useful-resources.html` and `/en/useful-resources.html`.
+- Added the Useful Resources entry to the Chinese and English Tools pages.
+- Added curated New Zealand, Australia, US and global reference links for tax, business registration, employment, statistics, exchange rates, market information and financial regulation.
+- Added client-side search and category filters for faster access to resource links.
+- Added reference-only disclaimers for external links, market data and exchange-rate information.
+- Previous production version remains archived as `v1.6` for rollback.
+
 ## v1.6 - Tax client deadline tracker
 
 - Added a new Tax Client Deadline Tracker under `/client-tax-deadline-tracker.html` and `/en/client-tax-deadline-tracker.html`.
