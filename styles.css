@@ -139,19 +139,19 @@ nav a[aria-current="page"] {
 
 .finance-canvas {
   position: absolute;
-  inset: auto 24vw 9vh auto;
+  inset: auto 18vw 7vh auto;
   z-index: 1;
-  width: min(32vw, 560px);
-  height: min(32vw, 520px);
+  width: min(42vw, 680px);
+  height: min(42vw, 640px);
   pointer-events: none;
   opacity: 0.96;
-  filter: drop-shadow(0 28px 55px rgba(0, 0, 0, 0.32));
+  filter: drop-shadow(0 30px 70px rgba(0, 0, 0, 0.4));
 }
 
 .finance-canvas.compact {
-  inset: auto 8vw 7vh auto;
-  width: min(36vw, 520px);
-  height: min(36vw, 440px);
+  inset: auto 5vw 5vh auto;
+  width: min(46vw, 620px);
+  height: min(42vw, 520px);
 }
 
 .hero-inner {

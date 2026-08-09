@@ -1,5 +1,16 @@
 # Little Dreamer Ltd Website Versions
 
+## v1.8.0 - Fintech visual refresh and mobile overlap fix
+
+- Upgraded the homepage 3D finance scene with floating dashboard panels and animated data lines.
+- Added a richer fintech-style visual system across the Tools landing page, PAYE calculator, Tax Client Deadline Tracker and Useful Resources page.
+- Reworked tool interiors so input panels, filter bars, rules, summary tiles and tables use professional dashboard-style backgrounds instead of plain white blocks.
+- Added controlled visual backgrounds to service, industry, FAQ and support cards while keeping the layout readable.
+- Fixed mobile overlap on Useful Resources cards where category labels collided with resource titles.
+- Standardised cache-busting asset versions across Chinese and English pages.
+- Adopted `MAJOR.MINOR.PATCH` versioning from this release onward. Future small fixes can use `v1.8.1`; larger feature/page additions can use `v1.9.0`; major structural redesigns can use `v2.0.0`.
+- Previous production version remains archived as `v1.7` for rollback.
+
 ## v1.7 - Useful resources hub
 
 - Added a new Useful Resources page under `/useful-resources.html` and `/en/useful-resources.html`.
