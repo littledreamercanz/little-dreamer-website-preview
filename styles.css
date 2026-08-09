@@ -1845,8 +1845,7 @@ blockquote p {
 }
 
 .resource-card h2,
-.resource-card p,
-.resource-card span {
+.resource-card p {
   position: relative;
   z-index: 1;
 }
@@ -2063,8 +2062,14 @@ blockquote p {
 }
 
 .resource-card span {
+  position: absolute;
   top: 40px;
   left: 36px;
+  z-index: 1;
+}
+
+.resource-card h2 {
+  margin-top: 0;
 }
 
 .paye-tool-section,
